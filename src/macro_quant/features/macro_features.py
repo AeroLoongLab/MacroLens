@@ -22,7 +22,7 @@ def build_macro_features(macro_indicators: pd.DataFrame) -> dict[str, float]:
     features["cpi_yoy"] = normalize(features["cpi_yoy_raw"], 2.0, 4.0)
     features["core_cpi_yoy"] = normalize(features["core_cpi_yoy_raw"], 2.0, 4.0)
     features["inflation_risk"] = max(0.0, (features["cpi_yoy"] + features["core_cpi_yoy"]) / 2.0)
-    features["pmi_raw"] = _latest(pivot, "NAPM", 50.0)
+    features["pmi_raw"] = _pmi_raw(pivot)
     features["pmi"] = normalize(features["pmi_raw"], 50.0, 10.0)
     unrate = pivot.get("UNRATE")
     if unrate is not None and len(unrate.dropna()) > 252:
@@ -69,6 +69,32 @@ def _latest(pivot: pd.DataFrame, column: str, default: float) -> float:
     if column not in pivot or pivot[column].dropna().empty:
         return default
     return float(pivot[column].dropna().iloc[-1])
+
+
+def _pmi_raw(pivot: pd.DataFrame) -> float:
+    if "NAPM" in pivot and not pivot["NAPM"].dropna().empty:
+        return _latest(pivot, "NAPM", 50.0)
+    for column in ["IPMANSICS", "INDPRO"]:
+        proxy = _pmi_proxy_from_output(pivot, column)
+        if proxy is not None:
+            return proxy
+    return 50.0
+
+
+def _pmi_proxy_from_output(pivot: pd.DataFrame, column: str) -> float | None:
+    if column not in pivot:
+        return None
+    series = pivot[column].dropna()
+    if len(series) <= 252:
+        return None
+    latest = float(series.iloc[-1])
+    three_month_previous = float(series.iloc[-64]) if len(series) > 63 else latest
+    year_previous = float(series.iloc[-253])
+    if latest == 0 or three_month_previous == 0 or year_previous == 0:
+        return None
+    three_month_change = latest / three_month_previous - 1.0
+    yoy_change = latest / year_previous - 1.0
+    return clamp(50.0 + 250.0 * three_month_change + 100.0 * yoy_change, 35.0, 65.0)
 
 
 def _yoy(pivot: pd.DataFrame, column: str) -> float:

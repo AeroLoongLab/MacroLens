@@ -1,6 +1,8 @@
 from datetime import date
 from pathlib import Path
 
+import pandas as pd
+
 from macro_quant.data.fixtures import make_macro_fixture, make_market_fixture, make_news_fixture
 from macro_quant.features.fragility_features import build_fragility_features
 from macro_quant.features.macro_features import build_macro_features
@@ -57,3 +59,50 @@ def test_selected_portfolio_weights_sum_to_one_and_respect_ranges() -> None:
     for rec in selected:
         low, high = ranges[rec.asset]
         assert low <= rec.weight <= high
+
+
+def test_macro_features_prefer_legacy_napm_when_available() -> None:
+    macro = pd.DataFrame(
+        {
+            "date": pd.bdate_range("2025-01-01", periods=260),
+            "indicator": "NAPM",
+            "value": 55.0,
+        }
+    )
+
+    features = build_macro_features(macro)
+
+    assert features["pmi_raw"] == 55.0
+    assert features["pmi"] > 0
+
+
+def test_macro_features_use_ipmansics_as_pmi_proxy() -> None:
+    dates = pd.bdate_range("2025-01-01", periods=300)
+    macro = pd.DataFrame(
+        {
+            "date": dates,
+            "indicator": "IPMANSICS",
+            "value": pd.Series(range(300), dtype=float) * 0.05 + 90.0,
+        }
+    )
+
+    features = build_macro_features(macro)
+
+    assert features["pmi_raw"] > 50.0
+    assert features["pmi"] > 0
+
+
+def test_macro_features_use_indpro_proxy_when_ipmansics_missing() -> None:
+    dates = pd.bdate_range("2025-01-01", periods=300)
+    macro = pd.DataFrame(
+        {
+            "date": dates,
+            "indicator": "INDPRO",
+            "value": 110.0 - pd.Series(range(300), dtype=float) * 0.05,
+        }
+    )
+
+    features = build_macro_features(macro)
+
+    assert features["pmi_raw"] < 50.0
+    assert features["pmi"] < 0

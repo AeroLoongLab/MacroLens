@@ -29,6 +29,11 @@ python scripts/run_dashboard.py
 
 - Offline fixtures cover market prices, macro indicators, and news narratives.
 - Live failures degrade to fixture/unknown values and are logged.
+- Live market data keeps stable internal ticker names while using provider-specific Yahoo symbols where needed
+  (for example `VIX -> ^VIX`, `DXY -> DX-Y.NYB`, `MOVE -> ^MOVE`).
+- FRED no longer provides the legacy `NAPM` ISM PMI series used by the model fixtures. In live mode, `pmi_raw`
+  is a PMI-like proxy derived from official FRED manufacturing output data (`IPMANSICS`, with `INDPRO` fallback),
+  not the raw ISM Manufacturing PMI release.
 - DuckDB storage is idempotent for repeated runs.
 - Daily reports are generated in both English and Chinese:
   - `reports/daily/YYYY-MM-DD_macrolens_report.md`

@@ -101,6 +101,7 @@ def make_macro_fixture(
         "A091RC1Q027SBEA": (190_000.0, 82.0, 850.0),
         "FYFSGDA188S": (-8.5, 0.0005, 0.018),
         "NAPM": (54.0, -0.0002, 0.070),
+        "IPMANSICS": (91.0, 0.002, 0.035),
         "RSAFS": (360_000.0, 22.0, 500.0),
         "INDPRO": (92.0, 0.002, 0.040),
         "BAA10Y": (2.9, 0.00001, 0.010),
@@ -117,6 +118,8 @@ def make_macro_fixture(
             values = np.clip(values + 1.4 * np.sin(np.linspace(0, 18, len(dates))), -1.0, 8.0)
         if indicator == "NAPM":
             values = np.clip(values + 4.0 * np.sin(np.linspace(0, 26, len(dates))), 35.0, 65.0)
+        if indicator == "IPMANSICS":
+            values = np.clip(values, 60.0, None)
         for dt, value in zip(dates, values, strict=True):
             rows.append(
                 {

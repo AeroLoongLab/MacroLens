@@ -40,3 +40,9 @@ core_assets:
   intermediate_bond: IEF
   long_bond: TLT
   cash_proxy: SHY
+
+provider_aliases:
+  yfinance:
+    DXY: DX-Y.NYB
+    VIX: ^VIX
+    MOVE: ^MOVE

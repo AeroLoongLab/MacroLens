@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Mapping
 from datetime import UTC, date, datetime
 from typing import Any
 
@@ -23,6 +24,13 @@ def configured_market_tickers(ticker_config: dict[str, Any]) -> list[str]:
     return sorted(set(tickers))
 
 
+def yfinance_symbol_map(ticker_config: dict[str, Any]) -> dict[str, str]:
+    aliases = ticker_config.get("provider_aliases", {}).get("yfinance", {})
+    if not isinstance(aliases, Mapping):
+        aliases = {}
+    return {ticker: str(aliases.get(ticker, ticker)) for ticker in configured_market_tickers(ticker_config)}
+
+
 def fetch_market_prices(
     ticker_config: dict[str, Any],
     start: str | date = "2010-01-01",
@@ -35,8 +43,11 @@ def fetch_market_prices(
     try:
         import yfinance as yf
 
+        provider_symbols = yfinance_symbol_map(ticker_config)
+        provider_to_ticker = {provider: ticker for ticker, provider in provider_symbols.items()}
+        download_symbols = sorted(provider_to_ticker)
         download = yf.download(
-            tickers=tickers,
+            tickers=download_symbols,
             start=str(start),
             end=str(end or date.today()),
             progress=False,
@@ -47,11 +58,12 @@ def fetch_market_prices(
         if download.empty:
             raise RuntimeError("yfinance returned an empty frame")
         rows: list[dict[str, object]] = []
-        for ticker in tickers:
+        for provider_symbol in download_symbols:
+            ticker = provider_to_ticker[provider_symbol]
             if isinstance(download.columns, pd.MultiIndex):
-                if ticker not in download.columns.get_level_values(0):
+                if provider_symbol not in download.columns.get_level_values(0):
                     continue
-                frame = download[ticker].copy()
+                frame = download[provider_symbol].copy()
             else:
                 frame = download.copy()
             frame = frame.rename(

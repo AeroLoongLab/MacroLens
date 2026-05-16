@@ -14,7 +14,7 @@ fred:
   GFDEBTN: Federal Debt
   A091RC1Q027SBEA: Federal Interest Payments
   FYFSGDA188S: Federal Surplus or Deficit to GDP
-  NAPM: ISM PMI
+  IPMANSICS: "Industrial Production: Manufacturing (SIC)"
   RSAFS: Retail Sales
   INDPRO: Industrial Production
   BAA10Y: BAA Corporate Spread
@@ -28,3 +28,4 @@ derived:
   - real_yield_score
   - credit_spread
   - fiscal_deficit_pressure
+  - pmi_proxy_from_manufacturing_production

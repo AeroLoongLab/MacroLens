@@ -35,8 +35,9 @@ def fetch_macro_indicators(
         logger.warning("FRED_API_KEY is missing; falling back to macro fixtures")
         return make_macro_fixture(indicators, start=start, end=end)
     rows: list[dict[str, object]] = []
-    try:
-        for indicator in indicators:
+    failed_indicators: list[str] = []
+    for indicator in indicators:
+        try:
             response = requests.get(
                 "https://api.stlouisfed.org/fred/series/observations",
                 params={
@@ -63,9 +64,27 @@ def fetch_macro_indicators(
                         "created_at": _utc_now(),
                     }
                 )
-        if not rows:
-            raise RuntimeError("FRED returned no usable observations")
-        return pd.DataFrame(rows)
-    except Exception as exc:  # pragma: no cover - live fallback depends on network
-        logger.warning("Live FRED fetch failed; falling back to fixtures: %s", exc)
-        return make_macro_fixture(indicators, start=start, end=end)
+        except Exception as exc:  # pragma: no cover - live fallback depends on network
+            failed_indicators.append(indicator)
+            logger.warning(
+                "Live FRED fetch failed for %s; falling back to fixture for this indicator: %s",
+                indicator,
+                _safe_error_summary(exc),
+            )
+    frames: list[pd.DataFrame] = []
+    if rows:
+        frames.append(pd.DataFrame(rows))
+    if failed_indicators:
+        frames.append(make_macro_fixture(failed_indicators, start=start, end=end))
+    if frames:
+        return pd.concat(frames, ignore_index=True)
+    logger.warning("FRED returned no usable observations; falling back to macro fixtures")
+    return make_macro_fixture(indicators, start=start, end=end)
+
+
+def _safe_error_summary(exc: Exception) -> str:
+    response = getattr(exc, "response", None)
+    status_code = getattr(response, "status_code", None)
+    if status_code is not None:
+        return f"{type(exc).__name__}(status_code={status_code})"
+    return type(exc).__name__

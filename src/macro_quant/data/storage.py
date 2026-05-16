@@ -188,13 +188,15 @@ class DuckDBStore:
     ) -> int:
         if frame.empty:
             return 0
+        keys = list(key_columns)
         clean = frame.copy()
         for column in columns:
             if column not in clean.columns:
                 clean[column] = None
         clean = clean[columns]
+        clean = clean.drop_duplicates(subset=keys, keep="last")
         temp_name = f"tmp_{table}"
-        key_expr = ", ".join(key_columns)
+        key_expr = ", ".join(keys)
         with self.connection() as con:
             con.register(temp_name, clean)
             con.execute(f"DELETE FROM {table} WHERE ({key_expr}) IN (SELECT {key_expr} FROM {temp_name})")
