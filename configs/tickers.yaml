@@ -1,0 +1,42 @@
+market:
+  gold:
+    - GLD
+    - IAU
+    - GC=F
+  equity:
+    - SPY
+    - QQQ
+    - DIA
+  bonds:
+    - SHY
+    - IEF
+    - TLT
+  usd:
+    - UUP
+    - DXY
+  oil:
+    - CL=F
+    - BNO
+  volatility:
+    - VIX
+    - MOVE
+  credit:
+    - HYG
+    - LQD
+  ai_leaders:
+    - NVDA
+    - MSFT
+    - AMZN
+    - GOOGL
+    - META
+    - AAPL
+    - AVGO
+
+core_assets:
+  gold: GLD
+  equity: SPY
+  growth_equity: QQQ
+  short_bond: SHY
+  intermediate_bond: IEF
+  long_bond: TLT
+  cash_proxy: SHY

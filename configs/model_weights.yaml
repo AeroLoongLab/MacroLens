@@ -1,0 +1,98 @@
+model_version: v0.4-mvp
+
+regime_temperature: 0.85
+
+regime_weights:
+  R1_soft_landing_reinflation:
+    cpi_yoy: 0.25
+    core_cpi_yoy: 0.20
+    unemployment_rate_change: -0.15
+    sp500_momentum: 0.10
+    oil_momentum: 0.15
+    fed_cut_probability: -0.15
+    inflation_resurgence_score: 0.08
+  R2_stagflation_pressure:
+    cpi_yoy: 0.25
+    pmi: -0.20
+    unemployment_rate_change: 0.20
+    oil_momentum: 0.15
+    credit_spread: 0.20
+    recession_risk_score: 0.08
+  R3_ai_productivity_bull:
+    sp500_momentum: 0.15
+    qqq_momentum: 0.20
+    ai_revenue_realization_score: 0.25
+    ai_capex_risk_score: -0.20
+    credit_spread: -0.10
+    liquidity_score: 0.10
+  R4_fiscal_credit_shock:
+    term_premium: 0.25
+    treasury_supply: 0.20
+    gold_momentum: 0.15
+    usd_momentum: -0.10
+    long_bond_return: -0.20
+    fiscal_credit_risk_score: 0.20
+  R5_recessionary_rate_cut:
+    fed_cut_probability: 0.25
+    unemployment_rate_change: 0.20
+    recession_risk_score: 0.20
+    cpi_yoy: -0.15
+    credit_spread: 0.15
+    sp500_momentum: -0.10
+  R6_liquidity_cascade:
+    vix_level: 0.25
+    move_level: 0.20
+    credit_spread: 0.15
+    phase_transition_risk: 0.20
+    liquidity_score: -0.20
+    liquidity_pressure_score: 0.15
+
+asset_weights:
+  Gold:
+    fiscal_credit_risk: 0.25
+    inflation_risk: 0.20
+    geopolitical_risk: 0.15
+    gold_narrative_score: 0.15
+    central_bank_buying_proxy: 0.10
+    real_yield_score: -0.15
+    usd_strength_score: -0.10
+    gold_crowding_score: -0.10
+  Equity:
+    earnings_momentum: 0.25
+    ai_roi_quality: 0.20
+    liquidity_score: 0.15
+    risk_appetite_score: 0.10
+    real_yield_score: -0.15
+    valuation_pressure: -0.15
+    ai_capex_pressure: -0.15
+    volatility_score: -0.10
+  Short_Bond:
+    yield_level: 0.40
+    stability_score: 0.25
+    cash_optional_value: 0.20
+    reinvestment_risk: -0.10
+  Intermediate_Bond:
+    rate_cut_expectation: 0.30
+    recession_risk: 0.25
+    yield_level: 0.20
+    inflation_risk: -0.15
+    term_premium: -0.10
+  Long_Bond:
+    rate_cut_expectation: 0.30
+    recession_risk: 0.30
+    inflation_risk: -0.25
+    term_premium: -0.25
+    fiscal_credit_risk: -0.20
+    long_bond_fragility: -0.15
+
+narrative_impacts:
+  N1_inflation_resurgence: inflation_resurgence_score
+  N2_fed_pivot: fed_pivot_score
+  N3_fiscal_credit_risk: fiscal_credit_risk_score
+  N4_treasury_auction_pressure: treasury_auction_pressure_score
+  N5_gold_safe_haven: gold_safe_haven_score
+  N6_ai_capex_risk: ai_capex_risk_score
+  N7_ai_revenue_realization: ai_revenue_realization_score
+  N8_recession_risk: recession_risk_score
+  N9_geopolitical_energy_shock: geopolitical_energy_shock_score
+  N10_liquidity_pressure: liquidity_pressure_score

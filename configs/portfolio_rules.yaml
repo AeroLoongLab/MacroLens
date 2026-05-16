@@ -1,0 +1,53 @@
+portfolio_types:
+  conservative:
+    base_weights:
+      Gold: 0.15
+      Short_Bond: 0.50
+      Intermediate_Bond: 0.15
+      Equity: 0.18
+      Long_Bond: 0.02
+    ranges:
+      Gold: [0.10, 0.20]
+      Short_Bond: [0.40, 0.60]
+      Intermediate_Bond: [0.10, 0.25]
+      Equity: [0.10, 0.25]
+      Long_Bond: [0.00, 0.05]
+  balanced:
+    base_weights:
+      Gold: 0.20
+      Short_Bond: 0.25
+      Intermediate_Bond: 0.15
+      Equity: 0.35
+      Long_Bond: 0.05
+    ranges:
+      Gold: [0.15, 0.25]
+      Short_Bond: [0.20, 0.35]
+      Intermediate_Bond: [0.10, 0.20]
+      Equity: [0.25, 0.40]
+      Long_Bond: [0.00, 0.10]
+  aggressive:
+    base_weights:
+      Gold: 0.15
+      Short_Bond: 0.15
+      Intermediate_Bond: 0.10
+      Equity: 0.55
+      Long_Bond: 0.05
+    ranges:
+      Gold: [0.10, 0.20]
+      Short_Bond: [0.10, 0.20]
+      Intermediate_Bond: [0.05, 0.15]
+      Equity: [0.45, 0.65]
+      Long_Bond: [0.00, 0.10]
+  crisis_defense:
+    base_weights:
+      Gold: 0.25
+      Short_Bond: 0.50
+      Intermediate_Bond: 0.10
+      Equity: 0.12
+      Long_Bond: 0.03
+    ranges:
+      Gold: [0.20, 0.35]
+      Short_Bond: [0.40, 0.60]
+      Intermediate_Bond: [0.05, 0.15]
+      Equity: [0.05, 0.20]
+      Long_Bond: [0.00, 0.05]

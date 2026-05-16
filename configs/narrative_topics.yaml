@@ -1,0 +1,40 @@
+narratives:
+  N1_inflation_resurgence:
+    query: US inflation
+    keywords: ["inflation", "cpi", "pce", "prices", "wages"]
+  N2_fed_pivot:
+    query: Federal Reserve rate cut
+    keywords: ["fed", "rate cut", "fomc", "powell", "policy"]
+  N3_fiscal_credit_risk:
+    query: US fiscal deficit debt interest payment
+    keywords: ["fiscal", "deficit", "debt", "interest payment", "credit"]
+  N4_treasury_auction_pressure:
+    query: Treasury auction demand
+    keywords: ["auction", "treasury demand", "tail", "bid-to-cover"]
+  N5_gold_safe_haven:
+    query: gold central bank buying ETF inflows
+    keywords: ["gold", "central bank", "safe haven", "de-dollarization", "ETF"]
+  N6_ai_capex_risk:
+    query: AI capex pressure
+    keywords: ["AI capex", "capital expenditure", "data center", "gpu spend"]
+  N7_ai_revenue_realization:
+    query: AI revenue growth Mag 7 earnings
+    keywords: ["AI revenue", "cloud growth", "earnings", "margin", "guidance"]
+  N8_recession_risk:
+    query: US recession risk
+    keywords: ["recession", "layoffs", "unemployment", "slowdown", "contraction"]
+  N9_geopolitical_energy_shock:
+    query: geopolitical risk oil
+    keywords: ["geopolitical", "oil", "energy shock", "war", "sanctions"]
+  N10_liquidity_pressure:
+    query: bond market stress liquidity
+    keywords: ["liquidity", "stress", "margin", "volatility", "funding"]
+
+source_quality:
+  Reuters: 1.0
+  Bloomberg: 1.0
+  "Financial Times": 0.95
+  "Wall Street Journal": 0.95
+  CNBC: 0.8
+  MarketWatch: 0.7
+  FixtureWire: 0.6

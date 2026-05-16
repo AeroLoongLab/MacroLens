@@ -1,0 +1,30 @@
+fred:
+  CPIAUCSL: CPI
+  CPILFESL: Core CPI
+  PCEPI: PCE
+  PCEPILFE: Core PCE
+  UNRATE: Unemployment Rate
+  PAYEMS: Nonfarm Payrolls
+  FEDFUNDS: Fed Funds Rate
+  DGS10: 10Y Treasury Yield
+  DGS2: 2Y Treasury Yield
+  DGS30: 30Y Treasury Yield
+  DFII10: 10Y TIPS Real Yield
+  T10YIE: 10Y Breakeven Inflation
+  GFDEBTN: Federal Debt
+  A091RC1Q027SBEA: Federal Interest Payments
+  FYFSGDA188S: Federal Surplus or Deficit to GDP
+  NAPM: ISM PMI
+  RSAFS: Retail Sales
+  INDPRO: Industrial Production
+  BAA10Y: BAA Corporate Spread
+  BAMLH0A0HYM2: High Yield Spread
+
+derived:
+  - cpi_yoy
+  - core_cpi_yoy
+  - unemployment_rate_change
+  - yield_curve_2y10y
+  - real_yield_score
+  - credit_spread
+  - fiscal_deficit_pressure
